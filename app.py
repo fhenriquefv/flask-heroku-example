@@ -3,6 +3,9 @@
 from flask import Flask, jsonify
 app = Flask(__name__)
 
+@app.route('/echo', methods=['POST'])
+def hello():
+   return jsonify(request.json)
 
 @app.route('/hello')
 def index():
