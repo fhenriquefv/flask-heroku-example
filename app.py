@@ -4,10 +4,10 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/hello')
 def index():
     """Return homepage."""
-    json_data = {'Hello': 'World!'}
+    json_data = {'oi': 'flask!'}
     return jsonify(json_data)
 
 
