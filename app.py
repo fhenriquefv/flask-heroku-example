@@ -11,5 +11,9 @@ def index():
     return jsonify(json_data)
 
 
+@app.route('/brkga', methods=['POST'])
+def brkga():
+   return jsonify(request.json)
+
 if __name__ == '__main__':
     app.run()
