@@ -5,7 +5,8 @@ app = Flask(__name__)
 
 @app.route('/brkga', methods=['POST'])
 def brkga():
-   return jsonify(request.json)
+   data = request.get_json()	
+   return jsonify(data)
 
 @app.route('/hello')
 def index():
