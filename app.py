@@ -3,14 +3,14 @@
 from flask import Flask, jsonify
 app = Flask(__name__)
 
-@app.route('/echo', methods=['POST'])
-def hello():
+@app.route('/brkga', methods=['POST'])
+def brkga():
    return jsonify(request.json)
 
 @app.route('/hello')
 def index():
     """Return homepage."""
-    json_data = {'oi': 'flask!'}
+    json_data = {'oie': 'flask!'}
     return jsonify(json_data)
 
 
