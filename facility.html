@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+.w3-btn{width:150px;}
+input[type=text], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+.container {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<script>
+var vetorCandidatos = [];
+
+function sendPostData(inputJson, url)
+{
+    // Sending and receiving data in JSON format using POST method
+    //
+    var xhr = new XMLHttpRequest();
+    //var url = "url";
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+          var outputJson = JSON.parse(xhr.responseText);
+          console.log("saida: "+outputJson);
+          //console.log(json.email + ", " + json.password);
+      }
+    };
+    //var data = JSON.stringify({"email": "hey@mail.com", "password": "101010"});
+    xhr.send(inputJson);
+}
+
+function runBRKGA()
+{
+  var inputJson = {};
+  inputJson.n = 20;
+  inputJson.m = 8;
+  inputJson.p = 20;
+  inputJson.elite = 4;
+  inputJson.mutant = 2;
+  inputJson.k = 10;
+  inputJson.type = false;
+  inputJson.locals = vetorCandidatos;
+  
+  console.log(JSON.stringify(inputJson));
+  var URL = "https://covid-19sad.herokuapp.com/brkga";
+  sendPostData(inputJson, URL); 
+}
+
+function preencherTabela()
+{
+    var candidato = new Object();  
+    candidato.nome         = document.getElementById("name").value;
+    candidato.custo        = document.getElementById("custo").value;
+    candidato.municipio    = document.getElementById("municipio").value;
+
+    vetorCandidatos.push(candidato);
+
+    showData();
+    
+}
+
+function remover (i)
+{
+    vetorCandidatos.splice(i,1);
+    showData();
+}
+
+function showData()
+{
+    var divCad = document.getElementById("cadastrados");
+    var code= "<table class=\"w3-table-all\" >";
+    
+    code += "<tr class=\"w3-red\" ><th> ID </th><th> Nome </th> <th> Custo (R$) </th> <th> Municipio </th> <th> Remover </th> </tr>";
+    var i;
+    for(i = 0; i < vetorCandidatos.length; i++)
+    {
+        code += "<tr><td>"+ i +" </td><td>" +vetorCandidatos[i].nome +"</td> <td>"+ vetorCandidatos[i].custo +"</td> <td>"+ vetorCandidatos[i].municipio+"</td> <td><input class=\"w3-btn w3-blue\" type=\"button\" id= \"btRemover\" value=\"Remover\" onclick=\"remover("+i+")\"/> </td></tr>";
+    }
+    code += "</table>"
+    console.log(code);
+    divCad.innerHTML = code;
+    //adicionar o titulo da tabela
+    var titulo = document.getElementById("titulo");
+    titulo.innerHTML = "Lista de locais candidatos: "+i;
+}
+
+</script>
+
+<h2>Localização ótima para hospitais de campanha</h2>
+<p>  O objetivo desta aplicação é prover a localização ótima de hospitais de campanha para atender à população fluminense 
+durante a pandemia COVID-19 causada pelo coronavírus.
+
+Implementamos uma meta-heurística BRKGA, cujos parâmetros de entrada são: os locais candidatos a receber um hospital de campanha, bem 
+como o custo estimado da instalação do hospital no referido local.
+
+De acordo com os dados demográficos dos municípios, disponibilizados pelo IBGE, obtivemos os dados populacionais dos municípios,
+sua densidade populacional e a categorização dos municípios em microrregiões.
+A nossa abordagem é capaz de selecionar os pontos mais adequados para instalação dos referidos
+hospitais, minimizando o custo total de instalação dos mesmos e maximizando a cobertura de atendimento à população.
+
+<div class="w3-container w3-blue">
+  <h2>Cadastro de local candidato </h2>
+</div>
+	<form class="w3-container">
+	<label> Nome do local : </label>
+	<input  class="w3-input" type="text" id="name"/>  
+	<label> Custo de instalação: </label>
+	<input  class="w3-input" type="text" id="custo"/> <br> 
+	<label>Município:</label>
+	<input class="w3-input" type="text" id="municipio"/> <br> <br>
+	
+	<input class="w3-btn w3-blue" type="button" id= "btSalvar" value="Adicionar Local" onclick="preencherTabela()"/>
+
+	</form>
+    <h2 id="titulo"> </h2>
+    <div class="w3-container" id = "cadastrados"> </div>
+
+     <br>
+     <br>
+    <div class="w3-bar">
+        <button class="w3-button w3-left w3-blue" id= "btConfigurar" value="Configurar Parâmetros" onclick="configurar()"> Configurar Parâmetros</button>
+        <button class="w3-button w3-right w3-blue" id= "btExecutar" value="Executar Algoritmo" onclick="runBRKGA()">Executar Algoritmo &raquo;</button>
+    </div>
+
+</body>
+</html>
