@@ -6,12 +6,12 @@ name = "pypi"
 [packages]
 gunicorn = "*"
 flask = "*"
+
+[dev-packages]
 pandas = "*"
 matplotlib = "*"
 numpy = "*"
 flask-cors ="*"
-
-[dev-packages]
 
 [requires]
 python_version = "3.6"
