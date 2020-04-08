@@ -8,10 +8,8 @@ gunicorn = "*"
 flask = "*"
 
 [dev-packages]
-pandas = "*"
-matplotlib = "*"
 numpy = "*"
-flask-cors ="*"
+
 
 [requires]
 python_version = "3.6"
