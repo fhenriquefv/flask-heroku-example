@@ -1,10 +1,12 @@
 """Flask App Project."""
 
 from flask import Flask, jsonify, request
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import BRKGA as brkga
+
 
 app = Flask(__name__)
 
