@@ -1,12 +1,10 @@
 """Flask App Project."""
 
 from flask import Flask, jsonify, request
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import BRKGA as brkga
-
 
 app = Flask(__name__)
 
@@ -19,9 +17,11 @@ def brkga():
 	prox.columns = prox.columns.to_numpy(int)
 	prox = prox.reindex(index = sorted(prox.index), columns=sorted(prox.columns))
 
-	params = pd.read_json(request.get_json(),dtype={"N":int,"M":int,"P":int,"Elite":int,"Mutant":int,"K":int, "S":str,"Type":bool})
-
-	_relation = pd.read_csv("Input/Facilities.csv",index_col=0)
+	params = pd.read_json("params.json",dtype={"N":int,"M":int,"P":int,"Elite":int,"Mutant":int,"K":int,"S":str,"Type":bool,"City":list,"Cost":list,"Cover":list})
+	_relation = pd.DataFrame()
+	_relation['City'] = pd.Series(params["City"]["Value"])
+	_relation["Cover"] = pd.Series(params["Cover"]["Value"])
+	_relation["Cost"] = pd.Series(params["Cost"]["Value"])
 
 	facilities_cost = []
 	facilities_cover = []
